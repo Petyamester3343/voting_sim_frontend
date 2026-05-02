@@ -1,0 +1,145 @@
+<main class="shell">
+  <section class="intro">
+    <div>
+      <p class="eyebrow">Magyar választási szimulátor</p>
+      <h1>Szavazatleadás ellenőrzött adatokkal</h1>
+    </div>
+    <nz-tag nzColor="processing">Angular 21 + NG-ZORRO</nz-tag>
+  </section>
+
+  @if (isLoadingData()) {
+    <nz-alert
+      nzType="info"
+      nzShowIcon
+      nzMessage="Törzsadatok betöltése folyamatban"
+      nzDescription="A megyék, pártok és képviselők az API-n keresztül érkeznek az adatbázisból.">
+    </nz-alert>
+  }
+
+  @if (dataLoadError()) {
+    <nz-alert
+      nzType="error"
+      nzShowIcon
+      [nzMessage]="dataLoadError()"
+      nzDescription="A frontend most már nem a beégetett mock adatokat használja.">
+    </nz-alert>
+  }
+
+  <form nz-form [formGroup]="form" (ngSubmit)="submitVote()" class="voting-grid">
+    <nz-card class="voter-panel" nzTitle="Választó adatai">
+      <div class="panel-stack">
+        <nz-form-item>
+          <nz-form-label nzRequired nzFor="lastName">Vezetéknév</nz-form-label>
+          <nz-form-control nzErrorTip="Adj meg érvényes magyar vezetéknevet.">
+            <input nz-input id="lastName" formControlName="lastName" autocomplete="family-name" placeholder="Kovács">
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-label nzRequired nzFor="firstName">Keresztnév</nz-form-label>
+          <nz-form-control nzErrorTip="Adj meg érvényes magyar keresztnevet.">
+            <input nz-input id="firstName" formControlName="firstName" autocomplete="given-name" placeholder="Anna">
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-label nzRequired nzFor="pid">PID</nz-form-label>
+          <nz-form-control nzErrorTip="A PID formátuma: 123456AB.">
+            <input nz-input id="pid" formControlName="pid" maxlength="8" placeholder="123456AB">
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-label nzRequired nzFor="county">Megye</nz-form-label>
+          <nz-form-control nzErrorTip="Válassz megyét.">
+            <nz-select id="county" formControlName="countyId" nzPlaceHolder="Megye kiválasztása" [nzDisabled]="isLoadingData()">
+              @for (county of counties; track county.id) {
+                <nz-option [nzValue]="county.id" [nzLabel]="county.name"></nz-option>
+              }
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-label nzRequired nzFor="sector">Szavazókörzet</nz-form-label>
+          <nz-form-control nzErrorTip="A körzet 1 és 3 között választható.">
+            <nz-select id="sector" formControlName="sector" [nzDisabled]="isLoadingData()">
+              @for (sector of sectors; track sector) {
+                <nz-option [nzValue]="sector" [nzLabel]="'Körzet ' + sector"></nz-option>
+              }
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </nz-card>
+
+    <nz-card class="ballot-panel" nzTitle="Szavazólap">
+      <div class="panel-stack">
+        <nz-alert
+          nzType="info"
+          nzShowIcon
+          [nzMessage]="selectedCounty ? selectedCounty.name + ', ' + form.controls.sector.value + '. körzet' : 'Először válassz megyét és körzetet'">
+        </nz-alert>
+
+        <nz-form-item>
+          <nz-form-label nzRequired nzFor="party">Párt</nz-form-label>
+          <nz-form-control nzErrorTip="Válassz pártot.">
+            <nz-select id="party" formControlName="partyId" nzPlaceHolder="Párt kiválasztása" [nzDisabled]="isLoadingData()">
+              @for (party of parties; track party.id) {
+                <nz-option [nzValue]="party.id" [nzLabel]="party.name"></nz-option>
+              }
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-label nzRequired nzFor="representative">Képviselőjelölt</nz-form-label>
+          <nz-form-control nzErrorTip="Válassz a megye és körzet jelöltjei közül.">
+            <nz-select
+              id="representative"
+              formControlName="representativeId"
+              nzPlaceHolder="Jelölt kiválasztása"
+              [nzDisabled]="isLoadingData() || !form.controls.countyId.value || !form.controls.partyId.value">
+              @for (representative of availableRepresentatives; track representative.id) {
+                <nz-option [nzValue]="representative.id" [nzLabel]="representativeLabel(representative)"></nz-option>
+              }
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+
+        @if (form.controls.countyId.value && form.controls.partyId.value && availableRepresentatives.length === 0) {
+          <nz-alert
+            nzType="warning"
+            nzShowIcon
+            nzMessage="Nincs jelölt"
+            nzDescription="Ebben a megyében, körzetben és pártnál nincs regisztrált képviselőjelölt.">
+          </nz-alert>
+        }
+
+        <nz-divider></nz-divider>
+
+        <div class="summary">
+          <span>Választó</span>
+          <strong>{{ form.controls.lastName.value || '-' }} {{ form.controls.firstName.value || '' }}</strong>
+          <span>Párt</span>
+          <strong>{{ selectedParty?.name || '-' }}</strong>
+          <span>Jelölt</span>
+          <strong>{{ selectedRepresentative?.name || '-' }}</strong>
+        </div>
+
+        @if (submissionError()) {
+          <nz-alert nzType="error" nzShowIcon [nzMessage]="submissionError()"></nz-alert>
+        }
+
+        @if (submissionSuccess()) {
+          <nz-result nzStatus="success" nzTitle="Szavazat rögzítve" [nzSubTitle]="submissionSuccess() ?? undefined"></nz-result>
+        }
+
+        <button nz-button nzType="primary" nzSize="large" [nzLoading]="isSubmitting()" [disabled]="isLoadingData()" class="submit-button">
+          <span nz-icon nzType="check-circle"></span>
+          Szavazat leadása
+        </button>
+      </div>
+    </nz-card>
+  </form>
+</main>
