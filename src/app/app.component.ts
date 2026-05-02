@@ -160,7 +160,7 @@ export class AppComponent implements OnInit {
       error: () => {
         this.isLoadingData.set(false);
         this.dataLoadError.set(
-          'Nem sikerült betölteni a megyéket, pártokat és képviselőket az adatforrásból. Ellenőrizd, hogy az API eléri-e a PRIM szerveren lévő Projekt adatbázist.'
+          'Nem sikerült betölteni a megyéket, pártokat és képviselőket az adatforrásból!'
         );
       }
     });

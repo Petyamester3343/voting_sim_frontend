@@ -1,13 +1,13 @@
 import {
   NZ_FORM_SIZE
-} from "./chunk-KHXKLMOL.js";
-import {
-  NzStringTemplateOutletDirective
-} from "./chunk-WOR5XSEC.js";
+} from "./chunk-L3CPHT6O.js";
 import {
   NzConfigService,
   WithConfig
 } from "./chunk-BU5L2TDI.js";
+import {
+  NzStringTemplateOutletDirective
+} from "./chunk-WOR5XSEC.js";
 import {
   takeUntilDestroyed,
   toSignal
@@ -17,7 +17,7 @@ import {
 } from "./chunk-O6XOP3YT.js";
 import {
   NgTemplateOutlet
-} from "./chunk-HKXTUIJ4.js";
+} from "./chunk-FXNLFM2W.js";
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -569,4 +569,4 @@ export {
   NzSpaceComponent,
   NzSpaceModule
 };
-//# sourceMappingURL=chunk-3UOLD646.js.map
+//# sourceMappingURL=chunk-KICQBCI7.js.map

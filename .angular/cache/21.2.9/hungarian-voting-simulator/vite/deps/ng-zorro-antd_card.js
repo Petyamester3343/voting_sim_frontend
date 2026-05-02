@@ -1,11 +1,11 @@
 import {
-  NzOutletModule,
-  NzStringTemplateOutletDirective
-} from "./chunk-WOR5XSEC.js";
-import {
   WithConfig,
   onConfigChangeEventForComponent
 } from "./chunk-BU5L2TDI.js";
+import {
+  NzOutletModule,
+  NzStringTemplateOutletDirective
+} from "./chunk-WOR5XSEC.js";
 import {
   takeUntilDestroyed
 } from "./chunk-LBVC3UCR.js";
@@ -18,7 +18,8 @@ import {
 } from "./chunk-O6XOP3YT.js";
 import {
   NgTemplateOutlet
-} from "./chunk-HKXTUIJ4.js";
+} from "./chunk-FXNLFM2W.js";
+import "./chunk-UCDK57LW.js";
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,

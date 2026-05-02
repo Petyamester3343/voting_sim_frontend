@@ -4,7 +4,6 @@
       <p class="eyebrow">Magyar választási szimulátor</p>
       <h1>Szavazatleadás ellenőrzött adatokkal</h1>
     </div>
-    <nz-tag nzColor="processing">Angular 21 + NG-ZORRO</nz-tag>
   </section>
 
   @if (isLoadingData()) {
@@ -21,7 +20,7 @@
       nzType="error"
       nzShowIcon
       [nzMessage]="dataLoadError()"
-      nzDescription="A frontend most már nem a beégetett mock adatokat használja.">
+      nzDescription="Kérjük ellenőrizze a kapcsolatot!">
     </nz-alert>
   }
 
@@ -43,8 +42,8 @@
         </nz-form-item>
 
         <nz-form-item>
-          <nz-form-label nzRequired nzFor="pid">PID</nz-form-label>
-          <nz-form-control nzErrorTip="A PID formátuma: 123456AB.">
+          <nz-form-label nzRequired nzFor="pid">Sz.ig. szám</nz-form-label>
+          <nz-form-control nzErrorTip="A sz.ig. szám formátuma: 123456AB.">
             <input nz-input id="pid" formControlName="pid" maxlength="8" placeholder="123456AB">
           </nz-form-control>
         </nz-form-item>

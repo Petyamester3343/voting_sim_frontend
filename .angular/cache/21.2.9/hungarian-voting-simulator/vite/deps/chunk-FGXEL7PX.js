@@ -1,21 +1,21 @@
 import {
+  NZ_SPACE_COMPACT_ITEM_TYPE,
+  NZ_SPACE_COMPACT_SIZE,
+  NzSpaceCompactItemDirective
+} from "./chunk-KICQBCI7.js";
+import {
+  NZ_FORM_SIZE
+} from "./chunk-L3CPHT6O.js";
+import {
   NzTransitionPatchModule
 } from "./chunk-4O7I5YHS.js";
 import {
   NzWaveModule
-} from "./chunk-LZO4DV55.js";
-import {
-  NZ_SPACE_COMPACT_ITEM_TYPE,
-  NZ_SPACE_COMPACT_SIZE,
-  NzSpaceCompactItemDirective
-} from "./chunk-3UOLD646.js";
-import {
-  NZ_FORM_SIZE
-} from "./chunk-KHXKLMOL.js";
+} from "./chunk-L3MHAVXL.js";
 import {
   NzIconDirective,
   NzIconModule
-} from "./chunk-47HMKUZP.js";
+} from "./chunk-ER4UKTPY.js";
 import {
   WithConfig,
   onConfigChangeEventForComponent
@@ -444,4 +444,4 @@ export {
   NzButtonComponent,
   NzButtonModule
 };
-//# sourceMappingURL=chunk-VUISGLQZ.js.map
+//# sourceMappingURL=chunk-FGXEL7PX.js.map

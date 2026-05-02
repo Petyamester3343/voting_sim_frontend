@@ -2,14 +2,6 @@ import {
   _defineProperty
 } from "./chunk-BQ76GOFF.js";
 import {
-  Platform
-} from "./chunk-CZOBARZX.js";
-import {
-  DomSanitizer,
-  HttpBackend,
-  HttpClient
-} from "./chunk-VPRWHOAB.js";
-import {
   NzConfigService,
   onConfigChangeEventForComponent
 } from "./chunk-BU5L2TDI.js";
@@ -17,12 +9,22 @@ import {
   takeUntilDestroyed
 } from "./chunk-LBVC3UCR.js";
 import {
+  Platform
+} from "./chunk-KK3LTLDN.js";
+import {
   warn,
   wrapIntoObservable
 } from "./chunk-4NGTLBQE.js";
 import {
+  DomSanitizer
+} from "./chunk-2SQP2LLJ.js";
+import {
+  HttpBackend,
+  HttpClient
+} from "./chunk-ZUYGOC5E.js";
+import {
   isPlatformBrowser
-} from "./chunk-HKXTUIJ4.js";
+} from "./chunk-FXNLFM2W.js";
 import {
   ChangeDetectorRef,
   DOCUMENT,
@@ -1782,4 +1784,4 @@ export {
   provideNzIconsPatch,
   NzIconModule
 };
-//# sourceMappingURL=chunk-47HMKUZP.js.map
+//# sourceMappingURL=chunk-ER4UKTPY.js.map
