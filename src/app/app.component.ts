@@ -102,7 +102,7 @@ export class AppComponent implements OnInit {
   }
 
   representativeLabel(representative: Representative): string {
-    return `${representative.name} - ${representative.profession}`;
+    return `${representative.name}`;
   }
 
   submitVote(): void {

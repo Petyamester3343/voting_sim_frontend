@@ -15,7 +15,6 @@ export interface Party {
 export interface Representative {
   id: string;
   name: string;
-  profession: string;
   countyId: string;
   sector: 1 | 2 | 3;
   partyId: string;
