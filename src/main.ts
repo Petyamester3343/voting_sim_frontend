@@ -1,14 +1,21 @@
 import { provideHttpClient } from '@angular/common/http';
 import { bootstrapApplication } from '@angular/platform-browser';
-import { provideAnimations } from '@angular/platform-browser/animations';
-import { provideNzI18n, hu_HU } from 'ng-zorro-antd/i18n';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import Aura from '@primeuix/themes/aura';
+import { providePrimeNG } from 'primeng/config';
 
 import { AppComponent } from './app/app.component';
 
 bootstrapApplication(AppComponent, {
   providers: [
     provideHttpClient(),
-    provideAnimations(),
-    provideNzI18n(hu_HU)
+    provideAnimationsAsync(),
+    providePrimeNG({
+      theme: {
+        preset: Aura
+      },
+      ripple: true,
+      inputVariant: 'outlined'
+    })
   ]
 }).catch(err => console.error(err));

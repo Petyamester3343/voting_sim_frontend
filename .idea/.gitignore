@@ -8,10 +8,3 @@
 # Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
-
-node_modules/
-dist/
-.angular/
-.codex-tools/
-npm-debug.log*
-yarn-error.log*

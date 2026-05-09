@@ -3,22 +3,16 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { AbstractControl, NonNullableFormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { forkJoin } from 'rxjs';
 
-import { NzAlertModule } from 'ng-zorro-antd/alert';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzCardModule } from 'ng-zorro-antd/card';
-import { NzDividerModule } from 'ng-zorro-antd/divider';
-import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzGridModule } from 'ng-zorro-antd/grid';
-import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzResultModule } from 'ng-zorro-antd/result';
-import { NzSelectModule } from 'ng-zorro-antd/select';
-import { NzSpaceModule } from 'ng-zorro-antd/space';
-import { NzTagModule } from 'ng-zorro-antd/tag';
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { DividerModule } from 'primeng/divider';
+import { InputTextModule } from 'primeng/inputtext';
+import { SelectModule } from 'primeng/select';
 
 import { County, Party, Representative, VotingApiService, VoteRequest } from './voting-api.service';
 
 const PID_PATTERN = /^\d{6}[A-Z]{2}$/;
+type FormControlName = 'firstName' | 'lastName' | 'pid' | 'countyId' | 'sector' | 'partyId' | 'representativeId';
 
 @Component({
   selector: 'app-root',
@@ -26,18 +20,11 @@ const PID_PATTERN = /^\d{6}[A-Z]{2}$/;
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    NzAlertModule,
-    NzButtonModule,
-    NzCardModule,
-    NzDividerModule,
-    NzFormModule,
-    NzGridModule,
-    NzIconModule,
-    NzInputModule,
-    NzResultModule,
-    NzSelectModule,
-    NzSpaceModule,
-    NzTagModule
+    ButtonModule,
+    CardModule,
+    DividerModule,
+    InputTextModule,
+    SelectModule
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
@@ -49,7 +36,11 @@ export class AppComponent implements OnInit {
   counties: County[] = [];
   parties: Party[] = [];
   representatives: Representative[] = [];
-  readonly sectors = [1, 2, 3] as const;
+  readonly sectorOptions = [
+    { label: 'Körzet 1', value: 1 },
+    { label: 'Körzet 2', value: 2 },
+    { label: 'Körzet 3', value: 3 }
+  ];
 
   readonly dataLoadError = signal<string | null>(null);
   readonly isLoadingData = signal(true);
@@ -67,6 +58,12 @@ export class AppComponent implements OnInit {
     representativeId: ['', [Validators.required]]
   });
 
+  constructor() {
+    this.form.controls.countyId.valueChanges.subscribe(() => this.resetRepresentative());
+    this.form.controls.sector.valueChanges.subscribe(() => this.resetRepresentative());
+    this.form.controls.partyId.valueChanges.subscribe(() => this.resetRepresentative());
+  }
+
   ngOnInit(): void {
     this.loadReferenceData();
   }
@@ -83,12 +80,6 @@ export class AppComponent implements OnInit {
     );
   }
 
-  constructor() {
-    this.form.controls.countyId.valueChanges.subscribe(() => this.resetRepresentative());
-    this.form.controls.sector.valueChanges.subscribe(() => this.resetRepresentative());
-    this.form.controls.partyId.valueChanges.subscribe(() => this.resetRepresentative());
-  }
-
   get selectedCounty(): County | undefined {
     return this.counties.find(county => county.id === this.form.controls.countyId.value);
   }
@@ -101,8 +92,9 @@ export class AppComponent implements OnInit {
     return this.representatives.find(representative => representative.id === this.form.controls.representativeId.value);
   }
 
-  representativeLabel(representative: Representative): string {
-    return `${representative.name}`;
+  isInvalid(controlName: FormControlName): boolean {
+    const control = this.form.controls[controlName];
+    return control.invalid && (control.dirty || control.touched);
   }
 
   submitVote(): void {
@@ -111,7 +103,7 @@ export class AppComponent implements OnInit {
     this.dataLoadError.set(null);
 
     if (this.isLoadingData()) {
-      this.submissionError.set('Az adatok betöltése még folyamatban van.');
+      this.submissionError.set('Still loading data...');
       return;
     }
 
@@ -160,7 +152,7 @@ export class AppComponent implements OnInit {
       error: () => {
         this.isLoadingData.set(false);
         this.dataLoadError.set(
-          'Nem sikerült betölteni a megyéket, pártokat és képviselőket!'
+          'Loading counties, paries, and candidates failed!'
         );
       }
     });
@@ -168,7 +160,7 @@ export class AppComponent implements OnInit {
 
   private hungarianNameValidator(control: AbstractControl<string>): ValidationErrors | null {
     const value = control.value?.trim() ?? '';
-    return /^[A-Za-zÁÉÍÓÖŐÚÜŰáéíóöőúüű][A-Za-zÁÉÍÓÖŐÚÜŰáéíóöőúüű .'-]{1,}$/.test(value)
+    return /^[A-Za-zÁÉÍÓÖŐÚÜŰáéíóöőúüű][A-Za-zÁÉÍÓÖŐÚÜŰáéíóöőúüű .'-]+$/.test(value)
       ? null
       : { hungarianName: true };
   }
